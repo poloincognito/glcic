@@ -62,9 +62,10 @@ def build_layer(
         layers.append(nn.BatchNorm2d(outputs))
 
     # activation layer
-    if activation == "ReLU":
+    activation = activation.lower()
+    if activation == "relu":
         layers.append(nn.ReLU())
-    elif activation == "LeakyReLU":
+    elif activation == "leakyrelu":
         layers.append(nn.LeakyReLU())
     elif activation == "sigmoid":
         layers.append(nn.Sigmoid())
