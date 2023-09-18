@@ -1,8 +1,10 @@
 import numpy as np
-import torch
 import datetime
 import os
 import pickle
+
+import torch
+import torchvision
 
 from glic.networks.completion_network import CompletionNetwork
 
@@ -77,5 +79,36 @@ def list_files(dir: str):
     files_list = []
     for path, subdirs, files in os.walk(dir):
         for name in files:
-            files_list.append(os.path.join(path, name))
+            full_path = path + "/" + name
+            files_list.append(full_path)
     return files_list
+
+
+class CustomSampler(torch.utils.data.Sampler):
+    """Samples elements sequentially, always in the same order, starting from start_idx.
+
+    Args:
+        data_source (Dataset): dataset to sample from
+    """
+
+    def __init__(self, data_source, start_idx) -> None:
+        self.start_idx = start_idx
+        self.total_len = len(data_source)
+
+    def __iter__(self):
+        return iter(range(self.start_idx, self.total_len))
+
+    def __len__(self) -> int:
+        return self.total_len - self.start_idx
+
+
+def get_dataloader(data_dir: str, resume_path: str, batch_size):
+    resume_index = list_files(data_dir).index(resume_path)
+    train_dataset = torchvision.datasets.ImageFolder(
+        root=data_dir, transform=torchvision.transforms.ToTensor()
+    )
+    custom_sampler = CustomSampler(train_dataset, resume_index)
+    dataloader = torch.utils.data.DataLoader(
+        train_dataset, batch_size=batch_size, sampler=custom_sampler
+    )
+    return dataloader
