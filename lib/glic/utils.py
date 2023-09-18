@@ -70,20 +70,6 @@ def get_latest_file_from_dir(dir: str) -> str:
     return max(paths, key=os.path.getctime)
 
 
-def load_cn_training_log(log_dir: str):
-    """
-    This function loads the cn_training_log and the CN model from a log directory.
-    """
-    # load the log
-    with open(log_dir + "/cn_training_log.p", "rb") as f:
-        log = pickle.load(f)
-    # load the model
-    cn = CompletionNetwork()
-    latest_cn_path = get_latest_file_from_dir(log_dir + "/cn/")
-    cn.load(latest_cn_path)
-    return log, cn
-
-
 def list_files(dir: str):
     """
     This function lists all the files in a directory and its subdirectories.
