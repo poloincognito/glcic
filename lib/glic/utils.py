@@ -1,6 +1,10 @@
 import numpy as np
 import torch
 import datetime
+import os
+import pickle
+
+from glic.networks.completion_network import CompletionNetwork
 
 
 def generate_mask(batch_size: int) -> tuple:
@@ -55,3 +59,37 @@ def get_current_datetime_string():
     date_time_string = f"{year}{month:02d}{day:02d}{hour:02d}{minute:02d}"
 
     return date_time_string
+
+
+def get_latest_file_from_dir(dir: str) -> str:
+    """
+    Get the latest file from a directory.
+    """
+    files = os.listdir(dir)
+    paths = [os.path.join(dir, basename) for basename in files]
+    return max(paths, key=os.path.getctime)
+
+
+def load_cn_training_log(log_dir: str):
+    """
+    This function loads the cn_training_log and the CN model from a log directory.
+    """
+    # load the log
+    with open(log_dir + "/cn_training_log.p", "rb") as f:
+        log = pickle.load(f)
+    # load the model
+    cn = CompletionNetwork()
+    latest_cn_path = get_latest_file_from_dir(log_dir + "/cn/")
+    cn.load(latest_cn_path)
+    return log, cn
+
+
+def list_files(dir: str):
+    """
+    This function lists all the files in a directory and its subdirectories.
+    """
+    files_list = []
+    for path, subdirs, files in os.walk(dir):
+        for name in files:
+            files_list.append(os.path.join(path, name))
+    return files_list
