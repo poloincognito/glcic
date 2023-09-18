@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+import datetime
 
 
 def generate_mask(batch_size: int) -> tuple:
@@ -40,3 +41,17 @@ def compute_mse_loss(output, target, erase_mask):
     residual_matrix = (erase_mask[:, None, :, :] * (output - target)) ** 2
     mse_batch = torch.sum(residual_matrix, (-1, -2, -3))
     return torch.mean(mse_batch)
+
+
+def get_current_datetime_string():
+    now = datetime.datetime.now()
+    year = now.year
+    month = now.month
+    day = now.day
+    hour = now.hour
+    minute = now.minute
+
+    # Format the date and time components into a string
+    date_time_string = f"{year}{month:02d}{day:02d}{hour:02d}{minute:02d}"
+
+    return date_time_string
