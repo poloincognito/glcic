@@ -32,6 +32,15 @@ class GlobalDiscriminator(nn.Module):
         vec = self.gd_net(X)
         return vec
 
+    # save and load
+    def save(self, path):
+        torch.save(self.state_dict(), path)
+        print("Save: state_dict saved in {}".format(path))
+
+    def load(self, path):
+        self.load_state_dict(torch.load(path))
+        print("Load: load_state dict from {}".format(path))
+
 
 class LocalDiscriminator(nn.Module):
 
@@ -58,3 +67,12 @@ class LocalDiscriminator(nn.Module):
     def forward(self, X):
         vec = self.ld_net(X)
         return vec
+
+    # save and load
+    def save(self, path):
+        torch.save(self.state_dict(), path)
+        print("Save: state_dict saved in {}".format(path))
+
+    def load(self, path):
+        self.load_state_dict(torch.load(path))
+        print("Load: load_state dict from {}".format(path))

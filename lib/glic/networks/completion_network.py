@@ -1,4 +1,5 @@
 import pandas as pd
+import torch
 import torch.nn as nn
 from importlib import resources as impresources
 
@@ -26,3 +27,12 @@ class CompletionNetwork(nn.Module):
     def forward(self, X):
         vec = self.cn_net(X)
         return vec
+
+    # save and load
+    def save(self, path):
+        torch.save(self.state_dict(), path)
+        print("Save: state_dict saved in {}".format(path))
+
+    def load(self, path):
+        self.load_state_dict(torch.load(path))
+        print("Load: load_state dict from {}".format(path))

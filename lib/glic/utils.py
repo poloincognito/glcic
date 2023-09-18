@@ -21,8 +21,22 @@ def generate_mask(batch_size: int) -> tuple:
     return local_mask, erase_mask
 
 
-def apply_mask(batch, erase_mask, replacement_val):
+def apply_mask(
+    batch: torch.tensor, erase_mask: torch.tensor, replacement_val: torch.tensor
+) -> torch.tensor:
+    """
+    Apply the boolean mask to the batch, replacing all corrsponding pixels with replacement_val.
+    """
     return (
         batch * (~erase_mask[:, None, :, :])
         + replacement_val[None, :, None, None] * erase_mask[:, None, :, :]
     )
+
+
+@torch.jit.script
+def compute_mse_loss(output, target, erase_mask):
+    """Compute the MSE loss between the output and the target,
+    only considering the masked region."""
+    residual_matrix = (erase_mask[:, None, :, :] * (output - target)) ** 2
+    mse_batch = torch.sum(residual_matrix, (-1, -2, -3))
+    return torch.mean(mse_batch)
