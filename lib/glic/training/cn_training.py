@@ -17,6 +17,9 @@ def train_cn(
     loss_list = []
     batch_size = dataloader.batch_size
     iterator = iter(dataloader)
+    is_cuda = next(cn.parameters()).is_cuda
+    if is_cuda:
+        replacement_val = replacement_val.cuda()
 
     for i in range(num_batch):
         print(f"\n### BATCH {i} ###")  # to be replaced by tqdm ?
@@ -24,10 +27,11 @@ def train_cn(
 
         # load batch
         initial_batch = next(iterator)[0]
-        initial_batch.cuda()
+        if is_cuda:
+            initial_batch = initial_batch.cuda()
 
         # mask
-        _, mask = generate_mask(batch_size)
+        _, mask = generate_mask(batch_size, is_cuda=is_cuda)
         batch = apply_mask(initial_batch, mask, replacement_val)
 
         # forward + backward + optimize
