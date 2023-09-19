@@ -181,3 +181,21 @@ def update_resume_path(
     resume_index = files_list.index(resume_path)
     new_resume_path = files_list[resume_index + batchnum * batchsize]
     return new_resume_path
+
+
+def apply_local_parameters(batch, local_parameters):
+    """
+    This function extract the local images defined by the local_parameters,
+    and returns them as a batch.
+
+    Eg: local_parameters = [[h1,h2,w1,w2], ...]
+    The returned tensor results will look like results[0] = batch[0,:,h1:h2,w1:w2]
+    """
+    slices = []
+    for idx, coords in enumerate(local_parameters):
+        h1, h2, w1, w2 = coords
+        # Extract slices from the batch using the coordinates
+        slice_tensor = batch[idx, :, h1:h2, w1:w2]
+        # Append the extracted slice to the list
+        slices.append(slice_tensor)
+    return torch.stack(slices, dim=0)
