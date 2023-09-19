@@ -9,6 +9,7 @@ def train_cn(
     dataloader: torch.utils.data.DataLoader,
     num_batch: int,
     replacement_val: torch.tensor,
+    info=1,
 ) -> list:
     """
     This function trains the CN network for num_batch batches.
@@ -22,7 +23,9 @@ def train_cn(
         replacement_val = replacement_val.cuda()
 
     for i in range(num_batch):
-        print(f"\n### BATCH {i} ###")  # to be replaced by tqdm ?
+        info_bool = (i + 1) % info
+        if info_bool:
+            print(f"\n### BATCH {i+1}/{num_batch} ###")  # to be replaced by tqdm ?
         optimizer.zero_grad()
 
         # load batch
@@ -43,5 +46,6 @@ def train_cn(
 
         # saving loss
         loss_list.append(float(loss))
-        print(f"loss: {float(loss)}")
+        if info_bool:
+            print(f"loss: {float(loss)}")
     return loss_list
