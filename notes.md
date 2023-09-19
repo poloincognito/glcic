@@ -1,3 +1,5 @@
 Currently working on `train_cn.py`.
 
-Need to write the checkpoints requirements.
+At each ssh connection:
+- git pull
+- update data and checkpoint
