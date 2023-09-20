@@ -1,6 +1,11 @@
 import torch
 from glic.networks.completion_network import CompletionNetwork
-from glic.utils import generate_mask, apply_mask, compute_mse_loss
+from glic.utils import (
+    generate_mask,
+    apply_mask,
+    compute_mse_loss,
+    update_replacement_val,
+)
 
 
 def train_cn(
@@ -31,6 +36,7 @@ def train_cn(
         initial_batch = next(iterator)[0]
         if is_cuda:
             initial_batch = initial_batch.cuda()
+        update_replacement_val(replacement_val, initial_batch)
 
         # mask
         _, mask = generate_mask(batch_size, is_cuda=is_cuda)
@@ -39,8 +45,7 @@ def train_cn(
         # forward + backward + optimize
         batch = cn.forward(batch)
         loss = compute_mse_loss(initial_batch, batch, mask)
-
-        # optimizer step
+        loss.backward()
         optimizer.step()
 
         # saving loss

@@ -199,3 +199,14 @@ def apply_local_parameters(batch, local_parameters):
         # Append the extracted slice to the list
         slices.append(slice_tensor)
     return torch.stack(slices, dim=0)
+
+
+def update_replacement_val(
+    replacement_val: torch.Tensor, batch: torch.tensor, evanescent=0.99
+):
+    """
+    In-place update of the replacement value (moving average).
+    """
+    replacement_val[...] = evanescent * replacement_val + (1 - evanescent) * torch.mean(
+        batch, dim=(0, 2, 3)
+    )
