@@ -35,7 +35,7 @@ def main(args):
     dataloader = get_dataloader(args.datadir, resume_path, batch_size=args.batchsize)
     train_session = len(dataloader) // args.batchsize
 
-    for session in range(2):
+    for session in range(1):
         # trains the completion network
         current_loss_list = train_cn(
             cn, optimizer, dataloader, args.batchnum, replacement_val, info=False
