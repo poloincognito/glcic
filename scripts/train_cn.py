@@ -12,8 +12,8 @@ from glic.utils import (
 )
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--batchsize", default=16, help="size of the batches", type=int)
-parser.add_argument("--batchnum", default=20, help="number of batch to run", type=int)
+parser.add_argument("--batchsize", default=96, help="size of the batches", type=int)
+parser.add_argument("--batchnum", default=10, help="number of batch to run", type=int)
 parser.add_argument(
     "--datadir", default="../data/train/", help="directory of the data", type=str
 )
@@ -22,12 +22,6 @@ parser.add_argument(
     default="../logs/checkpoints/",
     help="directory of the checkpoints",
     type=str,
-)
-parser.add_argument(
-    "--epochs",
-    type=int,
-    default=2,
-    help="not rigorously epochs, but number of training session",
 )
 
 
@@ -39,9 +33,9 @@ def main(args):
         args.checkpointsdir, cn, optimizer
     )
     dataloader = get_dataloader(args.datadir, resume_path, batch_size=args.batchsize)
-    assert len(dataloader) >= args.batchnum * args.epochs
+    train_session = len(dataloader) // args.batchsize
 
-    for epoch in range(args.epochs):
+    for session in range(2):
         # trains the completion network
         current_loss_list = train_cn(
             cn, optimizer, dataloader, args.batchnum, replacement_val, info=False
