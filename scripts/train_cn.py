@@ -13,7 +13,7 @@ from glic.utils import (
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--batchsize", default=96, help="size of the batches", type=int)
-parser.add_argument("--batchnum", default=10, help="number of batch to run", type=int)
+parser.add_argument("--batchnum", default=100, help="number of batch to run", type=int)
 parser.add_argument(
     "--datadir", default="../data/train/", help="directory of the data", type=str
 )
@@ -33,9 +33,16 @@ def main(args):
         args.checkpointsdir, cn, optimizer
     )
     dataloader = get_dataloader(args.datadir, resume_path, batch_size=args.batchsize)
-    train_session = len(dataloader) // args.batchsize
+    train_sessions = len(dataloader) // args.batchsize
 
-    for session in range(1):
+    for session in range(train_sessions):
+        if session > 0:
+            # update
+            dataloader = get_dataloader(
+                args.datadir, resume_path, batch_size=args.batchsize
+            )
+            train_sessions = len(dataloader) // args.batchsize
+
         # trains the completion network
         current_loss_list = train_cn(
             cn, optimizer, dataloader, args.batchnum, replacement_val, info=False
