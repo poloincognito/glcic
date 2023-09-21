@@ -9,6 +9,7 @@ from glic.utils import (
     save_checkpoint,
     get_dataloader,
     update_resume_path,
+    list_files,
 )
 
 parser = argparse.ArgumentParser()
@@ -35,7 +36,15 @@ def main(args):
     dataloader = get_dataloader(args.datadir, resume_path, batch_size=args.batchsize)
     train_sessions = len(dataloader) // args.batchsize
 
-    for session in range(train_sessions):
+    # info
+    print("The dataset is located at ", args.datadir)
+    print(len(list_files(args.datadir)), " is the number of files")
+    resume_index = list_files(args.datadir).index(resume_path)
+    print(resume_index, " is the resume index")
+    print(len(dataloader), " is the length of the dataloader")
+    print(f"{train_sessions} train sessions planned")
+
+    for session in range(0):  # train_sessions
         # trains the completion network
         current_loss_list = train_cn(
             cn, optimizer, dataloader, args.batchnum, replacement_val, info=False

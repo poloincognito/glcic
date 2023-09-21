@@ -81,6 +81,7 @@ def list_files(dir: str):
     """
     files_list = []
     for path, subdirs, files in os.walk(dir):
+        subdirs.sort()
         for name in files:
             full_path = path + "/" + name
             files_list.append(full_path)
