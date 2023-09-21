@@ -36,13 +36,6 @@ def main(args):
     train_sessions = len(dataloader) // args.batchsize
 
     for session in range(train_sessions):
-        if session > 0:
-            # update
-            dataloader = get_dataloader(
-                args.datadir, resume_path, batch_size=args.batchsize
-            )
-            train_sessions = len(dataloader) // args.batchsize
-
         # trains the completion network
         current_loss_list = train_cn(
             cn, optimizer, dataloader, args.batchnum, replacement_val, info=False
