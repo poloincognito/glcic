@@ -12,6 +12,18 @@ from glic.utils import (
     list_files,
 )
 
+"""
+This script trains the completion network on the training set.
+
+Optional arguments are:
+    --batchsize: size of the batches
+    --batchnum: number of batch to run between each checkpoints
+    --datadir: directory of the training data
+    --checkpointsdir: directory of the checkpoints
+
+It then runs the traing until the training set is exhausted.
+"""
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--batchsize", default=96, help="size of the batches", type=int)
 parser.add_argument("--batchnum", default=100, help="number of batch to run", type=int)

@@ -19,7 +19,19 @@ def train_cn(
     """
     This function trains the CN network for num_batch batches.
     It can resume its training from a checkpoint.
+
+    Args:
+        cn (CompletionNetwork): the completion network to train
+        optimizer (torch.optim.Optimizer): the optimizer to use
+        dataloader (torch.utils.data.DataLoader): the dataloader to use
+        num_batch (int): the number of batch to train
+        replacement_val (torch.tensor): the replacement value to use for the masked regions
+        info (bool, optional): whether to print info. Defaults to True.
+
+    Returns:
+        list: the list of the losses during the training session
     """
+    # set up
     loss_list = []
     batch_size = dataloader.batch_size
     iterator = iter(dataloader)
@@ -27,6 +39,7 @@ def train_cn(
     if is_cuda:
         replacement_val = replacement_val.cuda()
 
+    # batch iterations
     for i in range(num_batch):
         if info:
             print(f"\n### BATCH {i+1}/{num_batch} ###")  # to be replaced by tqdm ?
