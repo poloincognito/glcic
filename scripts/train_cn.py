@@ -44,7 +44,7 @@ def main(args):
     print(len(dataloader), " is the length of the dataloader")
     print(f"{train_sessions} train sessions planned")
 
-    for session in range(0):  # train_sessions
+    for session in range(train_sessions):  # train_sessions
         # trains the completion network
         current_loss_list = train_cn(
             cn, optimizer, dataloader, args.batchnum, replacement_val, info=False

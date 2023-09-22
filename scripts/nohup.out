@@ -1,0 +1,5 @@
+The dataset is located at  ../data/train/
+93666  is the number of files
+3302  is the resume index
+942  is the length of the dataloader
+9 train sessions planned
