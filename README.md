@@ -3,9 +3,11 @@
 This project is based on the content of a computer vision course. I try to re-implement the following paper from 2017:
 *Globally and Locally Consistent Image Completion*, http://dx.doi.org/10.1145/3072959.3073659
 
+![image info](./figures/glic_paper.PNG)
+
 The project is developed using Git.
 The implementation uses `torch` and CUDA for GPU training.
-I use an ssh connection to a university machine with an NVIDIA GeForce RTX 3090 for training.
+I use an ssh connection to a university machine with an NVIDIA GeForce RTX 3090 for the training sessions.
 
 ## Install
 
@@ -21,6 +23,12 @@ Deep dive in the code for further documentation.
 
 I first built the image completion network, see ```lib/glic/networks/completion_network.py```.
 
-The initial training can be remotely launched using ```nohup python tain_cn.py```.
+The initial training can be remotely launched using ```nohup python train_cn.py``` (*make sure to initialize the `./logs/checkpoints/` and `./data/train/` directories*).
+
+I trained the completion network for 19 hours on an NVIDIA GeForce RTX 3090.
 
 ![image info](./figures/cn_training.png)
+
+The whole training would take an estimated time of 37 days.
+
+To continue the projects, I scrapped some weights from `https://github.com/otenim/GLCIC-PyTorch` and adapted them to my network.
