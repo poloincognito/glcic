@@ -24,7 +24,7 @@ def train_discriminator(
     is_cuda = next(discriminator.parameters()).is_cuda
     if is_cuda:
         replacement_val = replacement_val.cuda()
-    compute_cross_entropy_loss = torch.nn.CrossEntropyLoss()
+    compute_loss = torch.nn.BCELoss()
 
     # batch iterations
     for i in range(num_batch):
@@ -44,14 +44,14 @@ def train_discriminator(
 
         # forward + backward (initial images)
         preds = discriminator(initial_batch, mask_localizations)
-        loss = compute_cross_entropy_loss(preds, torch.zeros_like(preds))
+        loss = compute_loss(preds, torch.zeros_like(preds))
         loss.backward()
         l1 = float(loss)
 
         # forward + backward (completed images)
-        masked_batch = cn.forward(masked_batch)
+        masked_batch = cn.forward(masked_batch).detach()
         preds = discriminator(masked_batch, mask_localizations)
-        loss = compute_cross_entropy_loss(preds, torch.ones_like(preds))
+        loss = compute_loss(preds, torch.ones_like(preds))
         loss.backward()
         l2 = float(loss)
 
