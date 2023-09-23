@@ -31,4 +31,4 @@ I trained the completion network for 19 hours on an NVIDIA GeForce RTX 3090.
 
 The whole training would take an estimated time of 37 days.
 
-To continue the projects, I scrapped some weights from `https://github.com/otenim/GLCIC-PyTorch` and adapted them to my network.
+To continue the project, I scrapped some weights from `https://github.com/satoshiiizuka/siggraph2017_inpainting` and adapted them to my network (the weights have to be converted from the torch format to the pytorch format).

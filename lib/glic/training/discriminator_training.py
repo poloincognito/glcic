@@ -1,6 +1,7 @@
 import torch
 from glic.networks.discriminators import *
 from glic.networks.completion_network import CompletionNetwork
+from glic.utils import update_replacement_val, generate_mask, apply_mask
 
 
 def train_discriminator(
@@ -23,6 +24,7 @@ def train_discriminator(
     is_cuda = next(discriminator.parameters()).is_cuda
     if is_cuda:
         replacement_val = replacement_val.cuda()
+    compute_cross_entropy_loss = torch.nn.CrossEntropyLoss()
 
     # batch iterations
     for i in range(num_batch):
@@ -40,7 +42,7 @@ def train_discriminator(
         mask_localizations, mask = generate_mask(batch_size, is_cuda=is_cuda)
         masked_batch = apply_mask(initial_batch, mask, replacement_val)
 
-        # forward + backward (completed images)
+        # forward + backward (initial images)
         preds = discriminator(initial_batch, mask_localizations)
         loss = compute_cross_entropy_loss(preds, torch.zeros_like(preds))
         loss.backward()
@@ -49,7 +51,7 @@ def train_discriminator(
         # forward + backward (completed images)
         masked_batch = cn.forward(masked_batch)
         preds = discriminator(masked_batch, mask_localizations)
-        loss = compute_cross_entropy_loss(preds, torck.ones_like(preds))
+        loss = compute_cross_entropy_loss(preds, torch.ones_like(preds))
         loss.backward()
         l2 = float(loss)
 
@@ -58,5 +60,5 @@ def train_discriminator(
         # saving loss
         loss_list.append((l1 + l2) / 2)
         if info:
-            print(f"loss: {(l1 + l2) / 2}")
+            print(f"loss: {l1} for non-completed images, {l2} for completed images")
     return loss_list
