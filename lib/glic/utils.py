@@ -203,7 +203,7 @@ def apply_local_parameters(batch, local_parameters):
 
 
 def update_replacement_val(
-    replacement_val: torch.Tensor, batch: torch.tensor, evanescent=0.99
+    replacement_val: torch.Tensor, batch: torch.tensor, evanescent=0.9999
 ):
     """
     In-place update of the replacement value (moving average).
