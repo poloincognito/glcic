@@ -40,7 +40,7 @@ def build_layer(
             dilation=dilat,
             stride=int(stri),
             padding=pad,
-            bias=False,  # batchnorm2d already has bias
+            bias=not (batchnorm),  # batchnorm2d already has bias
         )
         layers.append(conv_layer)
     else:
@@ -53,7 +53,7 @@ def build_layer(
             dilation=dilat,
             stride=eff_stri,
             padding=pad,
-            bias=False,  # batchnorm2d already has bias
+            bias=not (batchnorm),  # batchnorm2d already has bias
         )
         layers.append(deconv_layer)
 
