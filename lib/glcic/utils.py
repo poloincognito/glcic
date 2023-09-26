@@ -6,7 +6,7 @@ import pickle
 import torch
 import torchvision
 
-from glic.networks.completion_network import CompletionNetwork
+from glcic.networks.completion_network import CompletionNetwork
 
 
 def generate_mask(batch_size: int, is_cuda=False) -> tuple:

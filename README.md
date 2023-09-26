@@ -3,7 +3,7 @@
 This project is based on the content of a computer vision course. I try to re-implement the following paper from 2017:
 *Globally and Locally Consistent Image Completion*, http://dx.doi.org/10.1145/3072959.3073659
 
-![image info](./figures/glic_paper.PNG)
+![image info](./figures/glcic_paper.PNG)
 
 The project is developed using Git.
 The implementation uses `torch` and CUDA for GPU training.
@@ -11,7 +11,7 @@ I use an ssh connection to a university machine with an NVIDIA GeForce RTX 3090 
 
 ## Install
 
-I created a python library called `glic` (*Globally and Locally consistent Image Completion*) to achieve this challenge.
+I created a python library called `glcic` (*Globally and Locally Consistent Image Completion*) to achieve this challenge.
 One can install it with: `pip install -e .` from the root directory of the library (`-e` is useful if you aim to keep modifying the library).
 
 ## Discover

@@ -1,6 +1,6 @@
 import torch
-from glic.networks.completion_network import CompletionNetwork
-from glic.utils import (
+from glcic.networks.completion_network import CompletionNetwork
+from glcic.utils import (
     generate_mask,
     apply_mask,
     compute_mse_loss,

@@ -1,7 +1,7 @@
 import torch
-from glic.networks.discriminators import *
-from glic.networks.completion_network import CompletionNetwork
-from glic.utils import update_replacement_val, generate_mask, apply_mask
+from glcic.networks.discriminators import *
+from glcic.networks.completion_network import CompletionNetwork
+from glcic.utils import update_replacement_val, generate_mask, apply_mask
 
 
 def train_discriminator(

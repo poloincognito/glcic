@@ -4,8 +4,8 @@ import torch.nn as nn
 from importlib import resources as impresources
 
 import glic
-from glic.networks.net_tools import build_layer
-from glic.utils import apply_local_parameters
+from glcic.networks.net_tools import build_layer
+from glcic.utils import apply_local_parameters
 
 
 class GlobalDiscriminator(nn.Module):

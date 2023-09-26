@@ -3,8 +3,8 @@ import torch
 import torch.nn as nn
 from importlib import resources as impresources
 
-import glic
-from glic.networks.net_tools import build_layer
+import glcic
+from glcic.networks.net_tools import build_layer
 
 
 class CompletionNetwork(nn.Module):
@@ -16,7 +16,7 @@ class CompletionNetwork(nn.Module):
     def __init__(self):
         super().__init__()
         layers = []
-        cn_params_file = str(impresources.files(glic)) + "/networks/cn_layers_params.p"
+        cn_params_file = str(impresources.files(glcic)) + "/networks/cn_layers_params.p"
         cn_layers_params = pd.read_pickle(
             cn_params_file
         )  # load the parameters of the CN layers
