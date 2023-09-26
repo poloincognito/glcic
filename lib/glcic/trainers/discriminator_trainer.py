@@ -56,7 +56,7 @@ def train_discriminator(
             masked_batch = cn.forward(
                 torch.cat((masked_batch, mask[:, None, :, :]), dim=1)
             ).detach()
-            postprocessed = postprocess(masked_batch)
+            postprocessed = postprocess(masked_batch, mask, mask_localizations)
         preds = discriminator(masked_batch, mask_localizations)
         loss = compute_loss(preds, torch.ones_like(preds))
         loss.backward()
