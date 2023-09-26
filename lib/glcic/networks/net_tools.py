@@ -57,10 +57,6 @@ def build_layer(
         )
         layers.append(deconv_layer)
 
-    # batchnorm
-    if batchnorm:
-        layers.append(nn.BatchNorm2d(outputs))
-
     # activation layer
     activation = activation.lower()
     if activation == "relu":
@@ -69,6 +65,10 @@ def build_layer(
         layers.append(nn.LeakyReLU())
     elif activation == "sigmoid":
         layers.append(nn.Sigmoid())
+
+    # batchnorm
+    if batchnorm:
+        layers.append(nn.BatchNorm2d(outputs))
 
     # assembling everything
     layer = nn.Sequential(*layers)

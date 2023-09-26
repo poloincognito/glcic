@@ -24,8 +24,8 @@ class CompletionNetwork(nn.Module):
             layers.append(build_layer(*row.values))
         self.cn_net = nn.Sequential(*layers)  # assembles the CN layers
 
-    def forward(self, X):
-        vec = self.cn_net(X)
+    def forward(self, vec):
+        vec = self.cn_net(vec)
         return vec
 
     # save and load

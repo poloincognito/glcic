@@ -1,6 +1,6 @@
 # Presentation
 
-This project is based on the content of a computer vision course. I try to re-implement the following paper from 2017:
+This project is based on the content of a computer vision course. As a final project, I try to re-implement the following paper from 2017:
 *Globally and Locally Consistent Image Completion*, http://dx.doi.org/10.1145/3072959.3073659
 
 ![image info](./figures/glcic_paper.PNG)
@@ -14,6 +14,9 @@ I use an ssh connection to a university machine with an NVIDIA GeForce RTX 3090 
 I created a python library called `glcic` (*Globally and Locally Consistent Image Completion*) to achieve this challenge.
 One can install it with: `pip install -e .` from the root directory of the library (`-e` is useful if you aim to keep modifying the library).
 
+There is currently no `requirements.txt` file.
+Two folders need to be manually created: `data\train` and `logs\checkpoints`.
+
 ## Discover
 
 The best way to discover the library is to go through the notebooks.
@@ -25,10 +28,12 @@ I first built the image completion network, see ```lib/glic/networks/completion_
 
 The initial training can be remotely launched using ```nohup python train_cn.py``` (*make sure to initialize the `./logs/checkpoints/` and `./data/train/` directories*).
 
+*TO BE UPDATED !*  
+
 I trained the completion network for 19 hours on an NVIDIA GeForce RTX 3090.
 
 ![image info](./figures/cn_training.png)
 
 The whole training would take an estimated time of 37 days.
 
-To continue the project, I scrapped some weights from `https://github.com/satoshiiizuka/siggraph2017_inpainting` and adapted them to my network (the weights have to be converted from the torch format to the pytorch format).
+To continue the project, I scrapped some weights from `https://github.com/otenim/GLCIC-PyTorch`.
