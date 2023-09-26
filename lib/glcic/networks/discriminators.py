@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 from importlib import resources as impresources
 
-import glic
+import glcic
 from glcic.networks.net_tools import build_layer
 from glcic.utils import apply_local_parameters
 
@@ -17,7 +17,7 @@ class GlobalDiscriminator(nn.Module):
     def __init__(self):
         super().__init__()
         layers = []
-        gd_params_file = str(impresources.files(glic)) + "/networks/gd_layers_params.p"
+        gd_params_file = str(impresources.files(glcic)) + "/networks/gd_layers_params.p"
         gd_layers_params = pd.read_pickle(
             gd_params_file
         )  # load the parameters of the GD layers
@@ -53,7 +53,7 @@ class LocalDiscriminator(nn.Module):
     def __init__(self):
         super().__init__()
         layers = []
-        ld_params_file = str(impresources.files(glic)) + "/networks/ld_layers_params.p"
+        ld_params_file = str(impresources.files(glcic)) + "/networks/ld_layers_params.p"
         ld_layers_params = pd.read_pickle(
             ld_params_file
         )  # load the parameters of the LD layers

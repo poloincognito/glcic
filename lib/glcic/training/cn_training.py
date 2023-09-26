@@ -32,6 +32,7 @@ def train_cn(
         list: the list of the losses during the training session
     """
     # set up
+    cn.train()
     loss_list = []
     batch_size = dataloader.batch_size
     iterator = iter(dataloader)
@@ -54,6 +55,7 @@ def train_cn(
         # mask
         _, mask = generate_mask(batch_size, is_cuda=is_cuda)
         batch = apply_mask(initial_batch, mask, replacement_val)
+        batch = torch.cat((batch, mask[:, None, :, :]), dim=1)
 
         # forward + backward + optimize
         batch = cn.forward(batch)
