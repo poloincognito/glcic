@@ -1,7 +1,7 @@
 import torch
 from glcic.networks.discriminators import *
 from glcic.networks.completion_network import CompletionNetwork
-from glcic.utils import update_replacement_val, generate_mask, apply_mask
+from glcic.utils import update_replacement_val, generate_mask, apply_mask, postprocess
 
 
 def train_discriminator(
@@ -26,6 +26,9 @@ def train_discriminator(
         replacement_val = replacement_val.cuda()
     compute_loss = torch.nn.BCELoss()
 
+    cn.eval()
+    discriminator.train()
+
     # batch iterations
     for i in range(num_batch):
         if info:
@@ -49,9 +52,11 @@ def train_discriminator(
         l1 = float(loss)
 
         # forward + backward (completed images)
-        masked_batch = cn.forward(
-            torch.cat((masked_batch, mask[:, None, :, :]), dim=1)
-        ).detach()
+        with torch.no_grad():
+            masked_batch = cn.forward(
+                torch.cat((masked_batch, mask[:, None, :, :]), dim=1)
+            ).detach()
+            postprocessed = postprocess(masked_batch)
         preds = discriminator(masked_batch, mask_localizations)
         loss = compute_loss(preds, torch.ones_like(preds))
         loss.backward()

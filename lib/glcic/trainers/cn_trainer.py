@@ -32,13 +32,14 @@ def train_cn(
         list: the list of the losses during the training session
     """
     # set up
-    cn.train()
     loss_list = []
     batch_size = dataloader.batch_size
     iterator = iter(dataloader)
     is_cuda = next(cn.parameters()).is_cuda
     if is_cuda:
         replacement_val = replacement_val.cuda()
+
+    cn.train()
 
     # batch iterations
     for i in range(num_batch):

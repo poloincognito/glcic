@@ -2,6 +2,7 @@ import numpy as np
 import datetime
 import os
 import pickle
+import cv2
 
 import torch
 import torchvision
@@ -211,3 +212,41 @@ def update_replacement_val(
     replacement_val[...] = evanescent * replacement_val + (1 - evanescent) * torch.mean(
         batch, dim=(0, 2, 3)
     )
+
+
+def postprocess(batch: torch.tensor, mask: torch.tensor, mask_coords: list):
+    """Post process a batch of completed images.
+
+    Args:
+        batch (torch.tensor): a batch of completed images
+        mask (torch.tensor): the mask used
+    """
+    # format the mask
+    formated_mask = (255 * mask.numpy()).astype("uint8")
+    postprocessed = []
+
+    for idx, image in enumerate(batch):
+        # prepare inputs
+        x = np.moveaxis(image.numpy(), 0, 2)
+        x = (255 * x).astype("uint8")
+
+        # Telea ffm completion
+        ffm_completed = cv2.inpaint(
+            x, formated_mask[idx], 3, cv2.INPAINT_TELEA
+        )  # inplace implementation
+
+        # Perez poisson color blend
+        coords = mask_coords[idx]
+        center = [
+            (coords[0] + coords[1]) // 2,
+            (coords[2] + coords[3]) // 2,
+        ]  # good enought approximation
+        color_blend = cv2.seamlessClone(
+            x, ffm_completed, formated_mask[idx], center, flags=cv2.NORMAL_CLONE
+        )
+
+        # format
+        color_blend = color_blend / 255
+        postprocessed.append(torch.from_numpy(color_blend))
+
+    return torch.stack(postprocessed).permute(0, 3, 1, 2)
