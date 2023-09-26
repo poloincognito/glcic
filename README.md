@@ -15,7 +15,7 @@ I created a python library called `glcic` (*Globally and Locally Consistent Imag
 One can install it with: `pip install -e .` from the root directory of the library (`-e` is useful if you aim to keep modifying the library).
 
 There is currently no `requirements.txt` file.
-Two folders need to be manually created: `data\train` and `logs\checkpoints`.
+Two folders need to be manually created: `data/train` and `logs/checkpoints`.
 
 ## Discover
 
@@ -25,6 +25,8 @@ Deep dive in the code for further documentation.
 # *Completion Network*
 
 I first built the image completion network, see ```lib/glic/networks/completion_network.py```.
+
+Its trainer is ```lib/glic/trainers/cn_trainer.py```.
 
 The initial training can be remotely launched using ```nohup python train_cn.py``` (*make sure to initialize the `./logs/checkpoints/` and `./data/train/` directories*).
 
@@ -37,3 +39,17 @@ I trained the completion network for 19 hours on an NVIDIA GeForce RTX 3090.
 The whole training would take an estimated time of 37 days.
 
 To continue the project, I scrapped some weights from `https://github.com/otenim/GLCIC-PyTorch`.
+
+After the weights transfer, the completion ability of the CN network was:
+
+*TO BE UPDATED ! FIGURES*  
+
+# *Discriminator*
+
+The implementation of the discriminators is in ```lib/glic/networks/discriminators.py```.
+
+Its trainer is ```lib/glic/trainers/discriminators_trainer.py```.
+
+I trained the discriminator for x hours on an NVIDIA GeForce RTX 3090 and obtained:
+
+*TO BE COMPLETED ! FIGURES*
