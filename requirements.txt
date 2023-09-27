@@ -1,0 +1,6 @@
+numpy==1.24.2
+opencv_python==4.8.0.76
+pandas==2.0.0
+setuptools==65.6.3
+torch==2.0.1
+torchvision==0.15.2

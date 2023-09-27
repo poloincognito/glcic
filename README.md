@@ -12,9 +12,8 @@ I use an ssh connection to a university machine with an NVIDIA GeForce RTX 3090 
 ## Install
 
 I created a python library called `glcic` (*Globally and Locally Consistent Image Completion*) to achieve this challenge.
-One can install it with: `pip install -e .` from the root directory of the library (`-e` is useful if you aim to keep modifying the library).
-
-There is currently no `requirements.txt` file.
+One can install it with: `pip install -e .` from the root directory of the library (`-e` is useful if you aim to keep modifying the library).  
+Use `pip install -r requirements.txt` from the root of the project for other libraries.
 Two folders need to be manually created: `data/train` and `logs/checkpoints`.
 
 ## Discover
@@ -53,3 +52,7 @@ Its trainer is ```lib/glic/trainers/discriminators_trainer.py```.
 I trained the discriminator for x hours on an NVIDIA GeForce RTX 3090 and obtained:
 
 *TO BE COMPLETED ! FIGURES*
+
+# Conjugate training
+
+Finally, I implemented the conjugate training.
