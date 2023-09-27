@@ -47,7 +47,7 @@ def train_discriminator(
 
         # forward + backward (initial images)
         preds = discriminator(initial_batch, mask_localizations)
-        loss = compute_loss(preds, torch.zeros_like(preds))
+        loss = compute_loss(preds, torch.ones_like(preds))
         loss.backward()
         l1 = float(loss)
 
@@ -58,7 +58,7 @@ def train_discriminator(
             ).detach()
             postprocessed = postprocess(masked_batch, mask, mask_localizations)
         preds = discriminator(masked_batch, mask_localizations)
-        loss = compute_loss(preds, torch.ones_like(preds))
+        loss = compute_loss(preds, torch.zeros_like(preds))
         loss.backward()
         l2 = float(loss)
 
