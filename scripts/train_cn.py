@@ -2,7 +2,7 @@ import argparse
 
 import torch
 
-from glcic.training.cn_training import train_cn
+from glcic.trainers.cn_trainer import train_cn
 from glcic.networks.completion_network import CompletionNetwork
 from glcic.utils import (
     load_checkpoint,
