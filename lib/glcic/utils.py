@@ -154,7 +154,7 @@ def save_checkpoint(
 
 def load_checkpoint(
     dir: str,
-    cn: CompletionNetwork,
+    model,
     optimizer: torch.optim.Optimizer,
 ):
     """
@@ -163,7 +163,7 @@ def load_checkpoint(
     and the path of the image from which the training will resume.
     """
     checkpoint = torch.load(get_latest_file_from_dir(dir))
-    cn.load_state_dict(checkpoint["cn"])
+    model.load_state_dict(checkpoint["cn"])
     optimizer.load_state_dict(checkpoint["optimizer"])
     return (
         checkpoint["loss"],
@@ -212,6 +212,13 @@ def update_replacement_val(
     replacement_val[...] = evanescent * replacement_val + (1 - evanescent) * torch.mean(
         batch, dim=(0, 2, 3)
     )
+
+
+def update_moving_average(val, new_val, evanescent=0.7):
+    """
+    This function updates a moving average.
+    """
+    return evanescent * val + (1 - evanescent) * new_val
 
 
 def postprocess(batch: torch.tensor, mask: torch.tensor, mask_coords: list):
