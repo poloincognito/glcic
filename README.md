@@ -2,7 +2,8 @@
 
 This project is based on the content of a computer vision course. As a final project, I try to re-implement the following paper from 2017:
 *Globally and Locally Consistent Image Completion*, http://dx.doi.org/10.1145/3072959.3073659
-
+  
+*The following demo was extracted from the paper:*
 ![image info](./figures/glcic_paper.PNG)
 
 The project is developed using Git.
@@ -28,20 +29,18 @@ I first built the image completion network, see ```lib/glic/networks/completion_
 Its trainer is ```lib/glic/trainers/cn_trainer.py```.
 
 The initial training can be remotely launched using ```nohup python train_cn.py``` (*make sure to initialize the `./logs/checkpoints/` and `./data/train/` directories*).
-
-*TO BE UPDATED !*  
-
-I trained the completion network for 19 hours on an NVIDIA GeForce RTX 3090.
+  
+I trained the completion network for 23 hours on an NVIDIA GeForce RTX 3090.
 
 ![image info](./figures/cn_training.png)
 
-The whole training would take an estimated time of 37 days.
+The first phase of the training would take an estimated time of 39 days.
 
 To continue the project, I scrapped some weights from `https://github.com/otenim/GLCIC-PyTorch`.
 
 After the weights transfer, the completion ability of the CN network was:
 
-*TO BE UPDATED ! FIGURES*  
+![image info](./figures/completion_after_scrapping.png)
 
 # *Discriminator*
 
@@ -55,4 +54,10 @@ I trained the discriminator for x hours on an NVIDIA GeForce RTX 3090 and obtain
 
 # Conjugate training
 
-Finally, I implemented the conjugate training.
+The conjugate training goes as follow:
+
+![image info](./figures/discriminator_loss.png)
+
+![image info](./figures/completion_loss.png)
+
+**Warning:** In the completion network case, one must ensure that the weights of the discriminator are not updated by the backward propagation of the BCE loss. The simplest way to implement this is to use two different optimizers.

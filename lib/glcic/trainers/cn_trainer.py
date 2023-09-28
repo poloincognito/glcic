@@ -38,6 +38,7 @@ def train_cn(
     is_cuda = next(cn.parameters()).is_cuda
     if is_cuda:
         replacement_val = replacement_val.cuda()
+    # make sure that optimizer corresponds to cn !
 
     cn.train()
 

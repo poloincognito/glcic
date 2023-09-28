@@ -221,6 +221,12 @@ def postprocess(batch: torch.tensor, mask: torch.tensor, mask_coords: list):
         batch (torch.tensor): a batch of completed images
         mask (torch.tensor): the mask used
     """
+    # back to cpu
+    is_cuda = batch.is_cuda
+    if is_cuda:
+        batch = batch.cpu()
+        mask = mask.cpu()
+
     # format the mask
     formated_mask = (255 * mask.numpy()).astype("uint8")
     postprocessed = []
@@ -247,6 +253,36 @@ def postprocess(batch: torch.tensor, mask: torch.tensor, mask_coords: list):
 
         # format
         color_blend = color_blend / 255
-        postprocessed.append(torch.from_numpy(color_blend))
+        postprocessed.append(color_blend)
 
-    return torch.stack(postprocessed).permute(0, 3, 1, 2)
+    postprocessed = np.stack(postprocessed, axis=0, dtype="float32")
+    postprocessed = torch.from_numpy(postprocessed).permute(0, 3, 1, 2)
+    if is_cuda:
+        postprocessed = postprocessed.cuda()
+    return postprocessed
+
+
+def generate_random_masks_localization(batch_size: int) -> list:
+    """
+    This function generates random localizations for masks.
+
+    Returns:
+        masks_localizations (list): a list of coordinates (h,h+128,w,w+128) such that h and w are under 128.
+    """
+    masks_localizations = []
+    for i in range(batch_size):
+        w0, h0 = np.random.randint(0, 128), np.random.randint(0, 128)
+        masks_localizations.append([h0, h0 + 128, w0, w0 + 128])
+    return masks_localizations
+
+
+def get_model_grad_norm(model):
+    """
+    This function computes the norm of the gradients of a model.
+    """
+    total_norm = 0
+    for p in model.parameters():
+        param_norm = p.grad.detach().data.norm(2)
+        total_norm += param_norm.item() ** 2
+    total_norm = total_norm**0.5
+    return total_norm
