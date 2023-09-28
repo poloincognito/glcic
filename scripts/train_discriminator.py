@@ -2,7 +2,7 @@ import argparse
 
 import torch
 
-from glcic.trainers.discriminator import train_discriminator
+from glcic.trainers.discriminator_trainer import train_discriminator
 from glcic.networks.discriminators import Discriminator
 from glcic.networks.completion_network import CompletionNetwork
 from glcic.utils import (
@@ -21,6 +21,7 @@ Optional arguments are:
     --batchnum: number of batch to run between each checkpoints
     --datadir: directory of the training data
     --checkpointsdir: directory of the checkpoints
+    --cndir: path of the completion network
 
 It then runs the traing until the training set is exhausted.
 """
@@ -39,7 +40,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--cndir",
-    default="../data/logs/models/cn",
+    default="../logs/models/cn_scrapped_weights",
     help="directory of the trained completion network",
     type=str,
 )
@@ -50,7 +51,7 @@ def main(args):
     discriminator = Discriminator()
     cn = CompletionNetwork()
     cn.load(args.cndir)
-    optimizer = torch.optim.Adadelta(cn.parameters(), lr=2e-4)
+    optimizer = torch.optim.Adadelta(discriminator.parameters())
     loss_list, batch, resume_path, replacement_val = load_checkpoint(
         args.checkpointsdir, discriminator, optimizer
     )
