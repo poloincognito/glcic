@@ -76,7 +76,7 @@ def train(
         real_preds = discriminator(initial_batch, random_mask_localizations)
         l2 = bce_loss(real_preds, torch.ones_like(real_preds))
 
-        d_loss = (l1 + l2) / 2
+        d_loss = alpha * (l1 + l2) / 2
 
         # backward
         d_loss.backward()
@@ -99,16 +99,19 @@ def train(
         )  # no postprocess, backward propagation needed
         l2 = alpha * bce_loss(preds, torch.ones_like(preds))
 
-        # backward (with alpha update to keep mse grad and bce grad in the same range)
-        l1.backward(retain_graph=True)
-        mse_grad_norm = get_model_grad_norm(cn)
-        l2.backward()
-        mse_bce_grad_norm = get_model_grad_norm(cn)
-        ratio = mse_bce_grad_norm / mse_grad_norm  # approximately 1+1/alpha
-        assert ratio > 1.0, "grad ratio greater than one"
-        alpha = update_moving_average(alpha, 1 / (ratio - 1), 0.99)
-        if info:
-            print(f"mse loss grad/bce loss grad: {alpha}")
+        # backward
+        (l1 + l2).backward()
+
+        # with alpha update to keep mse grad and bce grad in the same range) TO BE DEBUGGED
+        # l1.backward(retain_graph=True)
+        # mse_grad_norm = get_model_grad_norm(cn)
+        # l2.backward()
+        # mse_bce_grad_norm = get_model_grad_norm(cn)
+        # ratio = mse_bce_grad_norm / mse_grad_norm  # approximately 1+1/alpha
+        # assert ratio > 1.0, "grad ratio smaller than one"
+        # alpha = update_moving_average(alpha, 1 / (ratio - 1), 0.99)
+        # if info:
+        #     print(f"mse loss grad/bce loss grad: {alpha}")
 
         # update
         cn_optimizer.step()
