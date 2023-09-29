@@ -12,6 +12,7 @@ class GlobalDiscriminator(nn.Module):
 
     """
     This class implements the global discriminator as described in the paper.
+    Its architecure is defined by gd_layers_params.p
     """
 
     def __init__(self):
@@ -48,6 +49,7 @@ class LocalDiscriminator(nn.Module):
 
     """
     This class implements the local discriminator as described in the paper.
+    Its architecure is defined by ld_layers_params.p
     """
 
     def __init__(self):

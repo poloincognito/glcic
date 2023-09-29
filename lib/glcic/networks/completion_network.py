@@ -11,6 +11,7 @@ class CompletionNetwork(nn.Module):
 
     """
     This class implements the Completion Network (CN) as described in the paper.
+    Its architecure is defined by cn_layers_params.p
     """
 
     def __init__(self):

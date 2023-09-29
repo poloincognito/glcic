@@ -25,8 +25,10 @@ def train(
 ) -> list:
     """
     This function implements the conjugate training of the completion network and the discriminator.
+    Check the README.md for explanatory schemes.
     It can resume its training from a checkpoint.
     """
+
     # set up
     loss_list = []
     batch_size = dataloader.batch_size

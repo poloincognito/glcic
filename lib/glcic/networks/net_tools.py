@@ -27,7 +27,7 @@ def build_layer(
 
     Returns:
         layer (nn.Sequential): desired pytorch neural network layer,
-        with its batchnorm and activation layers."""
+        with its activation and batchnorm layers included."""
 
     layers = []
 
