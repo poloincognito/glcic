@@ -44,6 +44,9 @@ parser.add_argument(
     help="directory of the trained completion network",
     type=str,
 )
+parser.add_argument(
+    "--trainsessions", default=-1, help="number of training sessions", type=int
+)
 
 
 def main(args):
@@ -65,6 +68,8 @@ def main(args):
     resume_index = list_files(args.datadir).index(resume_path)
     print(resume_index, " is the resume index")
     print(len(dataloader), " is the length of the dataloader")
+    if args.trainsessions >= 0:
+        train_sessions = args.trainsessions
     print(f"{train_sessions} train sessions planned")
 
     for session in range(train_sessions):  # train_sessions
