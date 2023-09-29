@@ -9,6 +9,7 @@ from glcic.utils import (
     compute_mse_loss,
     get_model_grad_norm,
     generate_random_masks_localization,
+    update_moving_average,
 )
 
 
@@ -36,8 +37,8 @@ def train(
     mse_loss = compute_mse_loss
     bce_loss = torch.nn.BCELoss()
     alpha = 4e-4
-    # make sure that cn_optimizer corresponds to cn !
-    # make sure that discriminator_optimizer corresponds to discriminator !
+    # make sure that the cn_optimizer corresponds to cn !
+    # make sure that the discriminator_optimizer corresponds to discriminator !
 
     cn.train()
     discriminator.train()
@@ -102,7 +103,8 @@ def train(
         l2.backward()
         mse_bce_grad_norm = get_model_grad_norm(cn)
         ratio = mse_bce_grad_norm / mse_grad_norm  # approximately 1+1/alpha
-        alpha = 1 / (ratio - 1)
+        assert ratio > 1.0, "grad ratio greater than one"
+        alpha = update_moving_average(alpha, 1 / (ratio - 1), 0.99)
         if info:
             print(f"mse loss grad/bce loss grad: {alpha}")
 
