@@ -121,7 +121,7 @@ def get_dataloader(data_dir: str, resume_path: str, batch_size):
 
 def save_checkpoint(
     dir: str,
-    cn: CompletionNetwork,
+    model,
     optimizer: torch.optim.Optimizer,
     loss: list,
     batch: int,
@@ -133,7 +133,7 @@ def save_checkpoint(
 
     Args:
         dir (str): directory where to save the checkpoint
-        cn (CompletionNetwork): the completion network whose state will be saved
+        model: the model whose state will be saved
         optimizer (torch.optim.Optimizer): the optimizer whose state will be saved
         loss (list): the current loss list (dimension 2), containing the loss list of each session
         batch (int): the current batch index
@@ -141,7 +141,7 @@ def save_checkpoint(
     """
     torch.save(
         {
-            "cn": cn.state_dict(),
+            "model": model.state_dict(),
             "optimizer": optimizer.state_dict(),
             "loss": loss,
             "batch": batch,
@@ -163,7 +163,7 @@ def load_checkpoint(
     and the path of the image from which the training will resume.
     """
     checkpoint = torch.load(get_latest_file_from_dir(dir))
-    model.load_state_dict(checkpoint["cn"])
+    model.load_state_dict(checkpoint["model"])
     optimizer.load_state_dict(checkpoint["optimizer"])
     return (
         checkpoint["loss"],
