@@ -1,6 +1,6 @@
 # Presentation
 
-This project is based on the content of a computer vision course. As a final project, I try to re-implement the following paper from 2017:
+This project is based on the content of a computer vision MOOC from Ecole Polytechnique that I followed on my own. As a final project, I try to re-implement the following paper from 2017:
 *Globally and Locally Consistent Image Completion*, http://dx.doi.org/10.1145/3072959.3073659
   
 *The following demo was extracted from the paper:*
@@ -22,7 +22,7 @@ Two folders need to be manually created: `data/train` and `logs/checkpoints`.
 The best way to discover the library is to go through the notebooks.
 Deep dive in the code for further documentation.
 
-# *Completion Network*
+# Completion Network
 
 I first built the image completion network, see ```lib/glic/networks/completion_network.py```.
 
@@ -42,15 +42,19 @@ After the weights transfer, the completion ability of the CN network was:
 
 ![image info](./figures/completion_after_scrapping.png)
 
-# *Discriminator*
+# Discriminator
 
 The implementation of the discriminators is in ```lib/glic/networks/discriminators.py```.
 
 Its trainer is ```lib/glic/trainers/discriminators_trainer.py```.
 
-I trained the discriminator for 7 hours on an NVIDIA GeForce RTX 3090 and obtained:
+I trained the discriminator for 2 hours on an NVIDIA GeForce RTX 3090 and obtained:
 
 ![image info](./figures/discriminator_training.png)
+
+When tested:
+
+![image info](./figures/discriminator_test.png)
 
 # Conjugate training
 

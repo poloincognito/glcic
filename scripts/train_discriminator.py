@@ -69,7 +69,7 @@ def main(args):
     print(resume_index, " is the resume index")
     print(len(dataloader), " is the length of the dataloader")
     if args.trainsessions >= 0:
-        train_sessions = args.trainsessions
+        train_sessions = min(args.trainsessions, train_sessions)
     print(f"{train_sessions} train sessions planned")
 
     for session in range(train_sessions):  # train_sessions

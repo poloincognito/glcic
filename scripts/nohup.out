@@ -3,3 +3,4 @@ The dataset is located at  ../data/train/
 3302  is the resume index
 942  is the length of the dataloader
 9 train sessions planned
+python: can't open file '/users/eleves-a/2020/paul.guillermit/glcic/scripts/train_discriminator': [Errno 2] No such file or directory
