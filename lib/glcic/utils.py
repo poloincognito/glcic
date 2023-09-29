@@ -255,8 +255,8 @@ def postprocess(batch: torch.tensor, mask: torch.tensor, mask_coords: list):
         # Perez poisson color blend
         coords = mask_coords[idx]
         center = [
-            (coords[0] + coords[1]) // 2,
             (coords[2] + coords[3]) // 2,
+            (coords[0] + coords[1]) // 2,
         ]  # good enought approximation
         color_blend = cv2.seamlessClone(
             x, ffm_completed, formated_mask[idx], center, flags=cv2.NORMAL_CLONE
