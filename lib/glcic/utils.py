@@ -167,7 +167,7 @@ def load_checkpoint(
         model.load_state_dict(checkpoint["model"])
     else:
         assert "cn" in checkpoint.keys()
-        model.load_state_dict("cn")
+        model.load_state_dict(checkpoint["cn"])
     optimizer.load_state_dict(checkpoint["optimizer"])
     return (
         checkpoint["loss"],
