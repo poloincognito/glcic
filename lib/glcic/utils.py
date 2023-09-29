@@ -163,7 +163,11 @@ def load_checkpoint(
     and the path of the image from which the training will resume.
     """
     checkpoint = torch.load(get_latest_file_from_dir(dir))
-    model.load_state_dict(checkpoint["model"])
+    if "model" in checkpoint.keys():  # backward compatibility
+        model.load_state_dict(checkpoint["model"])
+    else:
+        assert "cn" in checkpoint.keys()
+        model.load_state_dict("cn")
     optimizer.load_state_dict(checkpoint["optimizer"])
     return (
         checkpoint["loss"],
