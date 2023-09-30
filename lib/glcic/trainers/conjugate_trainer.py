@@ -24,6 +24,7 @@ def train(
     num_batch: int,
     replacement_val: torch.tensor,
     info=True,
+    adaptative_alpha=False,
 ) -> list:
     """
     This function implements the conjugate training of the completion network and the discriminator.
@@ -102,13 +103,16 @@ def train(
         l2 = alpha * bce_loss(preds, torch.ones_like(preds))
 
         # backward, with adaptative alpha to keep mse grad and bce grad in the same range
-        grad1 = torch.autograd.grad(l1, cn.parameters(), retain_graph=True)
-        grad2 = torch.autograd.grad(l2, cn.parameters())
-        grad1_norm, grad2_norm = get_grad_norm(grad1), get_grad_norm(grad2)
-        print("mse grad norm: ", grad1_norm, ", bce grad norm: ", grad2_norm)
-        alpha = update_moving_average(alpha, grad1_norm / grad2_norm, 0.99)
-        print("alpha: ", alpha)
-        manually_update_grad(cn.parameters(), grad1, grad2)
+        if adaptative_alpha:
+            grad1 = torch.autograd.grad(l1, cn.parameters(), retain_graph=True)
+            grad2 = torch.autograd.grad(l2, cn.parameters())
+            grad1_norm, grad2_norm = get_grad_norm(grad1), get_grad_norm(grad2)
+            print("mse grad norm: ", grad1_norm, ", bce grad norm: ", grad2_norm)
+            alpha = update_moving_average(alpha, grad1_norm / grad2_norm, 0.99)
+            print("alpha: ", alpha)
+            manually_update_grad(cn.parameters(), grad1, grad2)
+        else:
+            (l1 + l2).backward()
 
         # update
         cn_optimizer.step()
