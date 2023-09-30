@@ -2,7 +2,11 @@
 
 This project is based on the content of a computer vision MOOC from Ecole Polytechnique that I followed on my own. As a final project, I try to re-implement the following paper from 2017:
 *Globally and Locally Consistent Image Completion*, http://dx.doi.org/10.1145/3072959.3073659
-  
+
+**Key takeaway:**
+- I haven't been able to fully train the completion network due to limited computational power, so I started it with weights I found online. I handled the training of the discriminator and conjugate aspects myself.
+- I reimplemented the following feature: *"In practice, we take a more fine-grained control, such as initially keeping the norm of the MSE loss gradient roughly the same order of magnitude as the norm of the discriminator gradient. This helps stabilize the learning."* which I have never seen in other reimplementations.
+
 *The following demo was extracted from the paper:*
 ![image info](./figures/glcic_paper.PNG)
 

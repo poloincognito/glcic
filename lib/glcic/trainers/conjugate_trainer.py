@@ -10,6 +10,8 @@ from glcic.utils import (
     get_model_grad_norm,
     generate_random_masks_localization,
     update_moving_average,
+    get_grad_norm,
+    manually_update_grad,
 )
 
 
@@ -99,19 +101,14 @@ def train(
         )  # no postprocess, backward propagation needed
         l2 = alpha * bce_loss(preds, torch.ones_like(preds))
 
-        # backward
-        (l1 + l2).backward()
-
-        # with alpha update to keep mse grad and bce grad in the same range) TO BE DEBUGGED
-        # l1.backward(retain_graph=True)
-        # mse_grad_norm = get_model_grad_norm(cn)
-        # l2.backward()
-        # mse_bce_grad_norm = get_model_grad_norm(cn)
-        # ratio = mse_bce_grad_norm / mse_grad_norm  # approximately 1+1/alpha
-        # assert ratio > 1.0, "grad ratio smaller than one"
-        # alpha = update_moving_average(alpha, 1 / (ratio - 1), 0.99)
-        # if info:
-        #     print(f"mse loss grad/bce loss grad: {alpha}")
+        # backward, with adaptative alpha to keep mse grad and bce grad in the same range
+        grad1 = torch.autograd.grad(l1, cn.parameters(), retain_graph=True)
+        grad2 = torch.autograd.grad(l2, cn.parameters())
+        grad1_norm, grad2_norm = get_grad_norm(grad1), get_grad_norm(grad2)
+        print("mse grad norm: ", grad1_norm, ", bce grad norm: ", grad2_norm)
+        alpha = update_moving_average(alpha, grad1_norm / grad2_norm, 0.99)
+        print("alpha: ", alpha)
+        manually_update_grad(cn.parameters(), grad1, grad2)
 
         # update
         cn_optimizer.step()

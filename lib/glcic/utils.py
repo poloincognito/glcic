@@ -297,3 +297,26 @@ def get_model_grad_norm(model):
         total_norm += param_norm.item() ** 2
     total_norm = total_norm**0.5
     return total_norm
+
+
+def get_grad_norm(grad):
+    """
+    This function the norm of a grad.
+    """
+    total_norm = 0
+    for g in grad:
+        total_norm += torch.norm(g) ** 2
+    return float(total_norm**0.5)
+
+
+def manually_update_grad(parameters, *grads):
+    """
+    This function manually update the .grad attributes of the parameters,
+    to avoid a redundant use of backward if the gradient has already been computed.
+    Sum all grads.
+    """
+    for idx, p in enumerate(parameters):
+        new_grad = grads[0][idx]
+        for grad in grads[1:]:
+            new_grad += grad[idx]
+        p.grad = new_grad
