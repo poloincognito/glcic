@@ -48,7 +48,7 @@ The implementation of the discriminators is in ```lib/glic/networks/discriminato
 
 Its trainer is ```lib/glic/trainers/discriminators_trainer.py```.
 
-I trained the discriminator for 2 hours on an NVIDIA GeForce RTX 3090 and obtained:
+I trained the discriminator for 7 hours on an NVIDIA GeForce RTX 3090 and obtained:
 
 ![image info](./figures/discriminator_training.png)
 
