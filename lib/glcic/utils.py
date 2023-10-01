@@ -139,30 +139,17 @@ def save_checkpoint(
         batch (int): the current batch index
         resume_path (str): the path of the image from which the training will resume
     """
-    if type(model) != list:
-        torch.save(
-            {
-                "model": model.state_dict(),
-                "optimizer": optimizer.state_dict(),
-                "loss": loss,
-                "batch": batch,
-                "resume_path": resume_path,
-                "replacement_val": replacement_val,
-            },
-            dir + "/" + get_current_datetime_string(),
-        )
-    else:
-        models = [m.state_dict() for m in model]
-        torch.save(
-            {
-                "model": models,
-                "optimizer": optimizer.state_dict(),
-                "loss": loss,
-                "batch": batch,
-                "resume_path": resume_path,
-                "replacement_val": replacement_val,
-            }
-        )
+    torch.save(
+        {
+            "model": model.state_dict(),
+            "optimizer": optimizer.state_dict(),
+            "loss": loss,
+            "batch": batch,
+            "resume_path": resume_path,
+            "replacement_val": replacement_val,
+        },
+        dir + "/" + get_current_datetime_string(),
+    )
 
 
 def load_checkpoint(
@@ -177,11 +164,7 @@ def load_checkpoint(
     """
     checkpoint = torch.load(get_latest_file_from_dir(dir))
     if "model" in checkpoint.keys():  # backward compatibility
-        if type(model) != list:
-            model.load_state_dict(checkpoint["model"])
-        else:  # multiple models
-            for reference, save in zip(model, checkpoint["model"]):
-                reference.load_state_dict(save)
+        model.load_state_dict(checkpoint["model"])
     else:
         assert "cn" in checkpoint.keys()
         model.load_state_dict(checkpoint["cn"])
