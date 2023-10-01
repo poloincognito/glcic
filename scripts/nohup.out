@@ -18,3 +18,10 @@ The dataset is located at  ../data/train/
 49024  is the resume index
 1206  is the length of the dataloader
 8 train sessions planned
+Load: load_state dict from ../logs/models/cn_scrapped_weights
+The model is located at  ../logs/models/cn_scrapped_weights
+The dataset is located at  ../data/train/
+183912  is the number of files
+125824  is the resume index
+606  is the length of the dataloader
+6 train sessions planned
