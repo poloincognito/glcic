@@ -27,8 +27,8 @@ It then runs the traing until the training set is exhausted.
 """
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--batchsize", default=96, help="size of the batches", type=int)
-parser.add_argument("--batchnum", default=100, help="number of batch to run", type=int)
+parser.add_argument("--batchsize", default=48, help="size of the batches", type=int)
+parser.add_argument("--batchnum", default=200, help="number of batch to run", type=int)
 parser.add_argument(
     "--datadir", default="../data/train/", help="directory of the data", type=str
 )
