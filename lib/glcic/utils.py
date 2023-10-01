@@ -320,3 +320,59 @@ def manually_update_grad(parameters, *grads):
         for grad in grads[1:]:
             new_grad += grad[idx]
         p.grad = new_grad
+
+
+def save_conjugate_checkpoint(
+    dir: str,
+    models,
+    optimizers,
+    loss: list,
+    batch: int,
+    resume_path: str,
+    replacement_val: torch.tensor,
+):
+    """
+    This function saves the current state of the training.
+
+    Args:
+        dir (str): directory where to save the checkpoint
+        models: the cn and discriminator whose states will be saved
+        optimizer: the two optimizers (corresponding to the cn and discriminator) whose state will be saved
+        loss (list): the current loss list (dimension 2), containing the loss list of each session
+        batch (int): the current batch index
+        resume_path (str): the path of the image from which the training will resume
+    """
+    torch.save(
+        {
+            "models": [model.state_dict() for model in models],
+            "optimizers": [optimizer.state_dict() for optimizer in optimizers],
+            "loss": loss,
+            "batch": batch,
+            "resume_path": resume_path,
+            "replacement_val": replacement_val,
+        },
+        dir + "/" + get_current_datetime_string(),
+    )
+
+
+def load_conjugate_checkpoint(
+    dir: str,
+    models,
+    optimizers: torch.optim.Optimizer,
+):
+    """
+    This function loads the latest checkpoint from a directory.
+    It returns the loss list, the number of batch since the training began,
+    and the path of the image from which the training will resume.
+    """
+    checkpoint = torch.load(get_latest_file_from_dir(dir))
+    for ref_model, saved_model in zip(models, checkpoint["models"]):
+        ref_model.load_state_dict(saved_model)
+    for ref_optimizer, saved_optimizer in zip(optimizers, checkpoint["optimizers"]):
+        ref_optimizer.load_state_dict(saved_optimizer)
+    return (
+        checkpoint["loss"],
+        checkpoint["batch"],
+        checkpoint["resume_path"],
+        checkpoint["replacement_val"],
+    )
