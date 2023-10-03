@@ -25,3 +25,41 @@ The dataset is located at  ../data/train/
 125824  is the resume index
 606  is the length of the dataloader
 6 train sessions planned
+Load: load_state dict from ../logs/models/cn_scrapped_weights
+The cn model is located at  ../logs/models/cn_scrapped_weights
+The discriminator model is located at  ../logs/models/trained_discriminator
+The dataset is located at  ../data/train/
+189051  is the number of files
+1  is the resume index
+3939  is the length of the dataloader
+2 train sessions planned
+Traceback (most recent call last):
+  File "/users/eleves-a/2020/paul.guillermit/glcic/scripts/train_conjugate.py", line 122, in <module>
+    main(args)
+  File "/users/eleves-a/2020/paul.guillermit/glcic/scripts/train_conjugate.py", line 92, in main
+    current_loss_list = train(
+  File "/users/eleves-a/2020/paul.guillermit/glcic/lib/glcic/trainers/conjugate_trainer.py", line 115, in train
+    alpha = update_moving_average(alpha, float(l1) / float(l2), 0.99)
+ZeroDivisionError: float division by zero
+Load: load_state dict from ../logs/models/cn_scrapped_weights
+The cn model is located at  ../logs/models/cn_scrapped_weights
+The discriminator model is located at  ../logs/models/trained_discriminator
+The dataset is located at  ../data/train/
+189051  is the number of files
+1  is the resume index
+3939  is the length of the dataloader
+1 train sessions planned
+usage: train_conjugate.py [-h] [--batchsize BATCHSIZE] [--batchnum BATCHNUM]
+                          [--datadir DATADIR]
+                          [--checkpointsdir CHECKPOINTSDIR] [--cndir CNDIR]
+                          [--discriminatordir DISCRIMINATORDIR]
+                          [--trainsessions TRAINSESSIONS]
+train_conjugate.py: error: unrecognized arguments: --train_session 1
+Load: load_state dict from ../logs/models/cn_scrapped_weights
+The cn model is located at  ../logs/models/cn_scrapped_weights
+The discriminator model is located at  ../logs/models/trained_discriminator
+The dataset is located at  ../data/train/
+189051  is the number of files
+9601  is the resume index
+3739  is the length of the dataloader
+1 train sessions planned

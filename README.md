@@ -71,3 +71,7 @@ The conjugate training goes as follow:
 **Warnings:**
 - BCE losses are different when considering the discriminator or the completion network: The discriminator tries to guess correctly, while the completion network tries to fool the discriminator.
 - In the completion network case, one must ensure that the weights of the discriminator are not modified by the backward propagation of the BCE loss. The simplest way to implement this is to use two different optimizers.
+
+After 14 hours of training:  
+
+![image info](./figures/conjugate_training.png)

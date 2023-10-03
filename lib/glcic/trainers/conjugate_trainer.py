@@ -24,7 +24,7 @@ def train(
     num_batch: int,
     replacement_val: torch.tensor,
     info=True,
-    adaptative_alpha="loss norm",
+    adaptative_alpha=False,
 ) -> list:
     """
     This function implements the conjugate training of the completion network and the discriminator.

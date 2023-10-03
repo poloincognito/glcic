@@ -56,7 +56,7 @@ parser.add_argument(
 
 
 def main(args):
-    # loads the latest checkpoint
+    # load models
     cn = CompletionNetwork()
     cn.load(args.cndir)
     discriminator = Discriminator()
@@ -65,6 +65,8 @@ def main(args):
     # optimizers
     cn_optimizer = torch.optim.Adadelta(cn.parameters())
     discriminator_optimizer = torch.optim.Adadelta(discriminator.parameters())
+
+    # load checkpoints
     loss_list, batch, resume_path, replacement_val = load_conjugate_checkpoint(
         args.checkpointsdir,
         [cn, discriminator],
