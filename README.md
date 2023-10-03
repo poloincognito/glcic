@@ -75,3 +75,5 @@ The conjugate training goes as follow:
 After 14 hours of training:  
 
 ![image info](./figures/conjugate_training.png)
+
+The fine tuning process is still undergoing.
